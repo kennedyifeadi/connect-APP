@@ -11,6 +11,12 @@ router.get("/signup", (req, res) => {
     title: "connect || Signup Page",
     description: "Sign up to the website here"
   };
+  const error = req.query.error;
+  if (error == 409) {
+    locals.error = "Account already exists";
+  } else if (error == 500) {
+    locals.error = "Internal server error, Try again!";
+  }
   res.render("auth/signup", {
     layout: authLayout,
     locals
@@ -27,14 +33,15 @@ router.post("/signup", async (req, res) => {
 
     const token = jwt.sign({ Id: user.id }, jwtSecret);
     res.cookie("token", token, { httpOnly: true });
-    console.log(token);
-    res.json({
-      message: "success",
-      data: { email: email, password: password }
-    });
+    res.redirect("/user/update");
   } catch (error) {
-    console.log(error);
-    res.json({ message: "error", data: { error: error } });
+    if (error.code === 11000) {
+      res.status(409);
+      res.redirect("/auth/signup?error=409");
+    } else {
+      res.status(500);
+      res.redirect("/auth/signup?error=500");
+    }
   }
 });
 

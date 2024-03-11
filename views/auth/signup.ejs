@@ -18,6 +18,9 @@
     <main class="content">
       <div class="wrapper">
         <h1 class="welcomeMessage">Welcome to Connect</h1>
+        <% if (locals.error) { %>
+         <div><%= locals.error %></div>
+        <% } %>
         <form action="">
           <div class="signUpWithEmail">
             <input type="text" placeholder="Email">
