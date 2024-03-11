@@ -46,7 +46,10 @@ const UserSchema = new Schema(
         type: Schema.ObjectId,
         ref: "User"
       }
-    ]
+    ],
+    lastLogin: {
+      type: Timestamp
+    }
   },
   { timestamps: true }
 );
@@ -69,16 +72,16 @@ UserSchema.pre('save', function(next) {
     }
  });
  
- UserSchema.methods.isCorrectedPassword = function(password, callback) {
-     console.log(password);
-   bcrypt.compare(password, this.password, function(err, same){
-       if(err) {
-           callback(err);
-       }else{
-           callback(err, same);
-       }
-   });
- };
+//  UserSchema.methods.isCorrectedPassword = function(password, callback) {
+//      console.log(password);
+//    bcrypt.compare(password, this.password, function(err, same){
+//        if(err) {
+//            callback(err);
+//        }else{
+//            callback(err, same);
+//        }
+//    });
+//  };
  
 
 module.exports = mongoose.model("User", UserSchema);
