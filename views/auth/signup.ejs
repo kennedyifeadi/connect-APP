@@ -1,24 +1,9 @@
 <body>
   <div class="container">
-    <nav class="navBar">
-      <div class="logosection">
-        <div class="logoImg">
-          <img src="images\Depth 6, Frame 0.png" alt="" />
-        </div>
-        <div class="logoName">
-          <span>Connect</span>
-        </div>
-      </div>
-      <div class="business">
-        <div class="businessBtn">
-          <a href="">For Business</a>
-        </div>
-      </div>
-    </nav>
     <main class="content">
       <div class="wrapper">
         <h1 class="welcomeMessage">Welcome to Connect</h1>
-        <form action="">
+        <form action="/auth/signup" method="post">
           <div class="signUpWithEmail">
             <input type="text" placeholder="Email">
             <input type="text" placeholder="Password">
@@ -27,18 +12,18 @@
           <span class="or">OR</span>
           <div class="signUpWithOther">
             <button>
-              <a href=""><img src="images\Depth 7, Frame 0.png" alt="">Continue with Apple</a>
+              <a href=""><img src="/images\Depth 7, Frame 0.png" alt="">Continue with Apple</a>
             </button>
             <button>
-              <a href=""><img src="images\Group.png" alt="">Continue with Google</a>
+              <a href=""><img src="/images\Group.png" alt="">Continue with Google</a>
             </button>
             <button>
-              <a href=""><img src="images\Depth 6, Frame 0 (1).png" alt="">Continue with Facebook</a>
+              <a href=""><img src="/images\Depth 6, Frame 0 (1).png" alt="">Continue with Facebook</a>
             </button>
           </div>
           <div class="alreadyHaveanAccount">
             <span>Already have an account?</span>
-            <a href="">Log in</a>
+            <a href="/auth/login">Log in</a>
           </div>
         </form>
       </div>

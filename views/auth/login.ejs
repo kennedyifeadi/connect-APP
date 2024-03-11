@@ -1,1 +1,32 @@
-<h1>Get this</h1>
+<body>
+    <div class="container">
+      <main class="content">
+        <div class="wrapper">
+          <h1 class="welcomeMessage">Welcome back</h1>
+          <form action="/auth/authenticate" method="post">
+            <div class="signUpWithEmail">
+              <input type="text" placeholder="Display name or Email address">
+              <input type="text" placeholder="Password">
+              <input type="submit" value="Log in">
+            </div>
+            <span class="or">OR</span>
+            <div class="signUpWithOther">
+              <button>
+                <a href=""><img src="/images\Depth 7, Frame 0.png" alt="">Continue with Apple</a>
+              </button>
+              <button>
+                <a href=""><img src="/images\Group.png" alt="">Continue with Google</a>
+              </button>
+              <button>
+                <a href=""><img src="/images\Depth 6, Frame 0 (1).png" alt="">Continue with Facebook</a>
+              </button>
+            </div>
+            <div class="alreadyHaveanAccount">
+              <span>Don't have an account?</span>
+              <a href="/auth/signup">Sign up</a>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </body>
