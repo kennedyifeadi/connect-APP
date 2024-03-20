@@ -48,7 +48,8 @@ const UserSchema = new Schema(
       }
     ],
     lastLogin: {
-      type: Date
+      type: Date,
+      default: Date.now()
     }
   },
   { timestamps: true }
@@ -59,6 +60,7 @@ UserSchema.pre('save', function(next) {
     if(this.isNew || this.isModified('password')){
         //saving reference to this because of changing scopes
         const document = this;
+        document.displayName = this.email;
         bcrypt.hash(document.password, 10 ,function(err, hashedPassword) {
             if(err) {
                 return next(err);
@@ -72,15 +74,8 @@ UserSchema.pre('save', function(next) {
     }
  });
  
-//  UserSchema.methods.isCorrectedPassword = function(password, callback) {
-//      console.log(password);
-//    bcrypt.compare(password, this.password, function(err, same){
-//        if(err) {
-//            callback(err);
-//        }else{
-//            callback(err, same);
-//        }
-//    });
+//  UserSchema.methods.isCorrectedPassword = function(password) {
+//      return 
 //  };
  
 

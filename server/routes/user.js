@@ -8,7 +8,6 @@ router.get("/update", ensureAuth, (req, res) => {
       title: "connect || Update Page",
       description: "Update profile to continue to the website"
     };
-    console.log(req.userId);
     res.render("auth/update", {
       layout: authLayout,
       locals

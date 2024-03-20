@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/User");
 const authLayout = "../views/layouts/auth.ejs";
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -50,21 +51,60 @@ router.get("/login", (req, res) => {
     title: "connect || Login Page",
     description: "Get back to the website here"
   };
+  const error = req.query.error;
+  if (error == 409) {
+    locals.error = "Check your email and password and try again";
+  } else if (error == 500) {
+    locals.error = "Internal server error, Try again!";
+  }
   res.render("auth/login", {
     layout: authLayout,
     locals
   });
 });
 
-// router.post("/authenticate", async (req, res) => {
-//   const { email, password } = req.body;
+router.post("/authenticate", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(409).redirect("/auth/login?error=409");
+    }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        return res.status(409).redirect("/auth/login?error=409");
+    }
+
+    const token = jwt.sign({ Id: user.id }, jwtSecret);
+    res.cookie("token", token, { httpOnly: true });
+    await user.updateOne({ lastLogin: Date.now() });
+    res.redirect("/user/update");
+  } catch (error) {
+    console.log(error);
+    res.redirect("/login");
+  }
+});
+
+module.exports = router;
+
+// router.post("/user/login", async (req, res) => {
 //   try {
-//     const user = await User.findOne({ email });
+//     const locals = {
+//       title: "Login || CurioCraze",
+//       description: "Login Authentication for users | CurioCraze"
+//     };
+//     const { username, password } = req.body;
+
+//     const user = await User.findOne({ username });
 
 //     if (!user) {
 //       return res.render("auth/user_login", {
 //         locals,
-//         layout: authLayout
+//         layout: authLayout,
+//         invalid: true
 //       });
 //     }
 //     const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -79,12 +119,10 @@ router.get("/login", (req, res) => {
 
 //     const token = jwt.sign({ userId: user.id }, jwtSecret);
 //     res.cookie("user_token", token, { httpOnly: true });
-//     await user.updateOne({ lastLogin: Date.now() });
+//     await user.updateOne({lastLogin: Date.now()});
 //     res.redirect("/home");
 //   } catch (error) {
 //     console.log(error);
 //     res.redirect("/user");
 //   }
 // });
-
-module.exports = router;
