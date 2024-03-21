@@ -1,4 +1,4 @@
-<body>
+<body style="height: 140dvh;">
     <div class="container">
       <main class="content" style="margin-top: 100px;">
         <div class="wrapper">
@@ -9,55 +9,56 @@
                 <img src="/images\majesticons_camera-line.png" class="dummyfigure" alt="">
                 <img id="profilePicture" src="#" alt="">
               </div>
-              <input type="file" id="imageUpload" accept="image/*" onchange="displayImage(this)" required>
+              <input type="file" id="imageUpload" accept="image/*" onchange="displayImage(this)" name="profilePicture" required>
               <label for="imageUpload"  class="custom-file-upload">Upload image</label>
             </div>
               <div class="nameDetails">
-                <input type="text" placeholder="Firstname" required>
-                <input type="text" placeholder="Lastname" required>
-                <input type="text" placeholder="Preferred Display Name" required>
+                <input type="text" name="firstName" placeholder="Firstname" required>
+                <input type="text" name="lastName" placeholder="Lastname" required>
+                <input type="text" name="displayName" placeholder="Preferred Display Name" required>
               </div>
-                <input type="date" class="DOB" placeholder="Date of Birth" required>
+                <input type="date" name="DOB" class="DOB" placeholder="Date of Birth" required>
                 <div class="activeLocation">
-                <input type="text" placeholder="Location" required>
+                <input type="text" name="location" placeholder="Location" required>
                 <span>Generate</span>
                 </div>
                 <div class="interest">
-                  <label for="tech" class="test">
+                  <label for="tech" class="labelBox">
                     Technology
-                    <input type="checkbox" class="show" id="tech">
+                    <input type="checkbox" name="technology" class="checked" id="tech">
                   </label>
-                  <label for="science">
+                  
+                  <label for="science" class="labelBox">
                     Science
-                    <input type="checkbox" name="" id="science">
+                    <input type="checkbox" name="science" class="checked" id="science">
                   </label>
-                  <label for="religion">
+                  <label for="religion" class="labelBox">
                     Religion
-                    <input type="checkbox" name="" id="religion">
+                    <input type="checkbox" name="religion" class="checked" id="religion">
                   </label>
-                  <label for="academics">
+                  <label for="academics" class="labelBox">
                     Academics
-                    <input type="checkbox" name="" id="academics">
+                    <input type="checkbox" name="academics" class="checked" id="academics">
                   </label>
-                  <label for="sport">
+                  <label for="sport" class="labelBox">
                     Sport
-                    <input type="checkbox" name="" id="sport">
+                    <input type="checkbox" name="sport" class="checked" id="sport">
                   </label>
-                  <label for="music">
+                  <label for="music" class="labelBox">
                     Music
-                    <input type="checkbox" name="" id="music">
+                    <input type="checkbox" name="music" class="checked" id="music">
                   </label>
-                  <label for="food">
+                  <label for="food" class="labelBox">
                     Food
-                    <input type="checkbox" name="" id="food">
+                    <input type="checkbox" name="food" class="checked" id="food">
                   </label>
-                  <label for="game">
+                  <label for="game" class="labelBox">
                     Games
-                    <input type="checkbox" name="" id="game">
+                    <input type="checkbox" name="games" class="checked" id="game">
                   </label>
-                  <label for="politics">
+                  <label for="politics" class="labelBox">
                     Politics
-                    <input type="checkbox" name="" id="politics">
+                    <input type="checkbox" name="politics" class="checked" id="politics">
                   </label>
                 </div>
               <input type="submit" value="Finish!!" class="finishBtn">

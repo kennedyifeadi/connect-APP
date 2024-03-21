@@ -19,3 +19,30 @@ function displayImage(input) {
         profilePictureContainer.style.display = 'none';
     }
 }
+
+// let labelBox = document.querySelectorAll('.labelBox')
+// let interestBox = document.querySelectorAll('.checked');
+
+// interestBox.forEach(box =>{
+//     box.addEventListener('click', ()=>{
+//         labelBox.forEach(label =>{
+//             // label.target.classList.toggle('labelChecked')
+            
+//         })
+//     })
+    
+// })
+
+const labelBoxes = document.querySelectorAll('.labelBox');
+
+labelBoxes.forEach(labelBox => {
+    const checkbox = labelBox.querySelector('input[type="checkbox"]');
+
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            labelBox.classList.add('labelChecked');
+        } else {
+            labelBox.classList.remove('labelChecked');
+        }
+    });
+});
