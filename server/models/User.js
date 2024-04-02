@@ -10,8 +10,11 @@ const UserSchema = new Schema(
       unique: true
     },
     password: {
+      type: String
+    },
+    googleId: {
       type: String,
-      required: true
+      unique: true
     },
     firstname: {
       type: String
@@ -55,28 +58,29 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-UserSchema.pre('save', function(next) {
-    // check if document is new or anew password has been set
-    if(this.isNew || this.isModified('password')){
-        //saving reference to this because of changing scopes
-        const document = this;
-        document.displayName = this.email;
-        bcrypt.hash(document.password, 10 ,function(err, hashedPassword) {
-            if(err) {
-                return next(err);
-            }else{
-                document.password = hashedPassword;
-                return next();
-            }
-        });
-    } else{
-        return next();
+UserSchema.pre("save", function (next) {
+  // check if document is new or anew password has been set
+  if (this.isNew || this.isModified("password")) {
+    //saving reference to this because of changing scopes
+    const document = this;
+    document.displayName = this.email;
+    if (document.password) {
+      bcrypt.hash(document.password, 10, function (err, hashedPassword) {
+        if (err) {
+          return next(err);
+        } else {
+          document.password = hashedPassword;
+          return next();
+        }
+      });
     }
- });
- 
+  } else {
+    return next();
+  }
+});
+
 //  UserSchema.methods.isCorrectedPassword = function(password) {
-//      return 
+//      return
 //  };
- 
 
 module.exports = mongoose.model("User", UserSchema);

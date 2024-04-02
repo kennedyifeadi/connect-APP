@@ -5,7 +5,8 @@ const expressLayout = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const MongoStore = require("connect-mongo");
-
+const passport = require("passport");
+const passportSetUp = require("./server/services/passport");
 
 const connectDB = require("./server/config/db");
 
@@ -36,6 +37,11 @@ app.use(
   );
   
 app.use(express.static("public"));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session()); 
+
 
 // Templating Engine
 
