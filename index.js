@@ -5,7 +5,7 @@ const expressLayout = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const MongoStore = require("connect-mongo");
-
+const passportSetUp = require("./server/services/passport");
 
 const connectDB = require("./server/config/db");
 

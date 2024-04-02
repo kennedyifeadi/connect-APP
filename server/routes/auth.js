@@ -4,6 +4,7 @@ const User = require("../models/User");
 const authLayout = "../views/layouts/auth.ejs";
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -81,48 +82,28 @@ router.post("/authenticate", async (req, res) => {
     const token = jwt.sign({ Id: user.id }, jwtSecret);
     res.cookie("token", token, { httpOnly: true });
     await user.updateOne({ lastLogin: Date.now() });
-    res.redirect("/user/update");
+    res.redirect("/home");
   } catch (error) {
     console.log(error);
     res.redirect("/login");
   }
 });
 
+// Google Authentication
+router.get("/google", passport.authenticate("google", {
+  scope: ["profile"]
+}));
+
+// Facebook Authentication
+router.get("/facebook", (req, res)=>{
+  res.send("Auth by Facebook");
+  
+});
+
+// Apple Authentication
+router.get("/apple", (req, res)=>{
+  res.send("Auth by Apple");
+  
+});
 module.exports = router;
 
-// router.post("/user/login", async (req, res) => {
-//   try {
-//     const locals = {
-//       title: "Login || CurioCraze",
-//       description: "Login Authentication for users | CurioCraze"
-//     };
-//     const { username, password } = req.body;
-
-//     const user = await User.findOne({ username });
-
-//     if (!user) {
-//       return res.render("auth/user_login", {
-//         locals,
-//         layout: authLayout,
-//         invalid: true
-//       });
-//     }
-//     const isPasswordValid = await bcrypt.compare(password, user.password);
-
-//     if (!isPasswordValid) {
-//       return res.render("auth/user_login", {
-//         locals,
-//         layout: authLayout,
-//         invalid: true
-//       });
-//     }
-
-//     const token = jwt.sign({ userId: user.id }, jwtSecret);
-//     res.cookie("user_token", token, { httpOnly: true });
-//     await user.updateOne({lastLogin: Date.now()});
-//     res.redirect("/home");
-//   } catch (error) {
-//     console.log(error);
-//     res.redirect("/user");
-//   }
-// });

@@ -2,19 +2,15 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20");
 const FacebookStrategy = require("passport-facebook");
 const AppleStrategy = require("passport-apple");
+const { google } = require("../config/keys");
 
 passport.use(
     new GoogleStrategy({
-    // Options for the strategy
-}), ()=>{
-    // Passport Callback Option
-});
-
-
-
-passport.use(
-    new FacebookStrategy({
-    // Options for the strategy
-}), ()=>{
-    // Passport Callback Option
-});
+        // options for google strategy
+        clientID: google.clientID,
+        clientSecret: google.clientSecret,
+        callbackURL: "/auth/google/callback"
+    }, () => {
+        // passport callback function
+    })
+);
