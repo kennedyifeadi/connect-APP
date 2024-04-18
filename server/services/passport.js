@@ -2,7 +2,7 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20");
 const FacebookStrategy = require("passport-facebook");
 const AppleStrategy = require("passport-apple");
-const { google } = require("../config/keys");
+const { google } = require("../keys");
 
 passport.use(
     new GoogleStrategy({
