@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require("../models/User");
 const authLayout = "../views/layouts/auth.ejs";
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const passport = require("passport");
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -11,6 +13,12 @@ router.get("/signup", (req, res) => {
     title: "connect || Signup Page",
     description: "Sign up to the website here"
   };
+  const error = req.query.error;
+  if (error == 409) {
+    locals.error = "Account already exists";
+  } else if (error == 500) {
+    locals.error = "Internal server error, Try again!";
+  }
   res.render("auth/signup", {
     layout: authLayout,
     locals
@@ -27,14 +35,15 @@ router.post("/signup", async (req, res) => {
 
     const token = jwt.sign({ Id: user.id }, jwtSecret);
     res.cookie("token", token, { httpOnly: true });
-    console.log(token);
-    res.json({
-      message: "success",
-      data: { email: email, password: password }
-    });
+    res.redirect("/user/update");
   } catch (error) {
-    console.log(error);
-    res.json({ message: "error", data: { error: error } });
+    if (error.code === 11000) {
+      res.status(409);
+      res.redirect("/auth/signup?error=409");
+    } else {
+      res.status(500);
+      res.redirect("/auth/signup?error=500");
+    }
   }
 });
 
@@ -43,41 +52,58 @@ router.get("/login", (req, res) => {
     title: "connect || Login Page",
     description: "Get back to the website here"
   };
+  const error = req.query.error;
+  if (error == 409) {
+    locals.error = "Check your email and password and try again";
+  } else if (error == 500) {
+    locals.error = "Internal server error, Try again!";
+  }
   res.render("auth/login", {
     layout: authLayout,
     locals
   });
 });
 
-// router.post("/authenticate", async (req, res) => {
-//   const { email, password } = req.body;
-//   try {
-//     const user = await User.findOne({ email });
+router.post("/authenticate", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
 
-//     if (!user) {
-//       return res.render("auth/user_login", {
-//         locals,
-//         layout: authLayout
-//       });
-//     }
-//     const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!user) {
+      return res.status(409).redirect("/auth/login?error=409");
+    }
 
-//     if (!isPasswordValid) {
-//       return res.render("auth/user_login", {
-//         locals,
-//         layout: authLayout,
-//         invalid: true
-//       });
-//     }
+      const isPasswordValid = await bcrypt.compare(password, user.password);
 
-//     const token = jwt.sign({ userId: user.id }, jwtSecret);
-//     res.cookie("user_token", token, { httpOnly: true });
-//     await user.updateOne({ lastLogin: Date.now() });
-//     res.redirect("/home");
-//   } catch (error) {
-//     console.log(error);
-//     res.redirect("/user");
-//   }
-// });
+      if (!isPasswordValid) {
+        return res.status(409).redirect("/auth/login?error=409");
+    }
 
+    const token = jwt.sign({ Id: user.id }, jwtSecret);
+    res.cookie("token", token, { httpOnly: true });
+    await user.updateOne({ lastLogin: Date.now() });
+    res.redirect("/home");
+  } catch (error) {
+    console.log(error);
+    res.redirect("/login");
+  }
+});
+
+// Google Authentication
+router.get("/google", passport.authenticate("google", {
+  scope: ["profile"]
+}));
+
+// Facebook Authentication
+router.get("/facebook", (req, res)=>{
+  res.send("Auth by Facebook");
+  
+});
+
+// Apple Authentication
+router.get("/apple", (req, res)=>{
+  res.send("Auth by Apple");
+  
+});
 module.exports = router;
+
