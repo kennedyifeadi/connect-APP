@@ -210,19 +210,18 @@ body{
     color: #1A80E5;
 }
 .errorMessage{
-    position: absolute;
+    position: relative;
     display: flex;
     font-weight: 600;
     justify-content: flex-start;
     padding: 10px;
     align-items: center;
     border-radius: 4px;
-    top: 80px;
-    right: 30px;
+    /* top: 80px; */
+    /* right: 30px; */
     transition: 0.5s ease-in-out;
-    width: max-content;
-    box-shadow: 0 0 5px red;
-    height: 55px;
+    background-color: rgb(252, 222, 222); 
+    height: 45px;
 }
 .closeIcon{
     width: 20px;
